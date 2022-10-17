@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Data
 @ApiModel(description = "Department")
-@Document("Department")
+@Document("Department")	//科室
 public class Department extends BaseMongoEntity {
 	
 	private static final long serialVersionUID = 1L;
@@ -45,6 +45,7 @@ public class Department extends BaseMongoEntity {
 
 	@ApiModelProperty(value = "大科室名称")
 	private String bigname;
+
 
 }
 

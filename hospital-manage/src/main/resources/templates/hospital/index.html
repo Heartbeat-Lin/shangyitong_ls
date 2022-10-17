@@ -20,7 +20,7 @@
             <th width="15%">医院名称</th>
             <td width="35%"><b style="font-size: 14px" th:text="${hospital.hosname}"></b> | <span th:text="'医院等级编号：'+${ hospital.hostype}"></span></td>
             <th width="15%">医院logo</th>
-            <td width="35%"><img th:src="${'data:image/jpeg;base64,'+(hospital.logoData)}"  width="80"></td>
+            <td width="35%"><img th:src="${'data:image/png;base64,'+(hospital.logoData)}"  width="80"></td>
         </tr>
         <tr>
             <th>医院编码</th>

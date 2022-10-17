@@ -29,4 +29,7 @@ public interface DictService extends IService<Dict> {
     public void importDictData(MultipartFile file);
 
 
+    String getDictName(String dictCode, String value);
+
+    List<Dict> findByDictCode(String dictCode);
 }

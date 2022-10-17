@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -86,6 +87,46 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    //根据dictcode值和value值进行查询
+    //当dictcode不为空时，根据dictcode查出其id值，再根据id和value共同查出dict
+    //为空时直接根据id查
+    @Override
+    public String getDictName(String dictCode, String value) {
+        if(StringUtils.isEmpty(dictCode)){
+            QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+            wrapper.eq("value",value);
+            Dict dict = baseMapper.selectOne(wrapper);
+            return dict.getName();
+        }else{
+
+            QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+            Long parent_id = getDictByDictCode(dictCode).getId();
+            Dict dict = baseMapper.selectOne(wrapper.eq("value", value)
+                    .eq("parent_id", parent_id));
+            return dict.getName();
+        }
+    }
+
+    @Override
+    public List<Dict> findByDictCode(String dictCode) {
+        QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+        //查询出父dict对象
+        Dict dictByDictCode = getDictByDictCode(dictCode);
+
+
+        List<Dict> childData = this.findChildData(dictByDictCode.getId());
+        return childData;
+    }
+
+    private Dict getDictByDictCode(String dictCode){
+        QueryWrapper<Dict> wrapper = new QueryWrapper<>();
+        wrapper.eq("dict_code",dictCode);
+        Dict dict = baseMapper.selectOne(wrapper);
+        return dict;
     }
 
     //@Autowired
