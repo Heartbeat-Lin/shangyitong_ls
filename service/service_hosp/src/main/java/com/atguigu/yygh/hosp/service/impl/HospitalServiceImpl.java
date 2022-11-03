@@ -12,6 +12,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +111,51 @@ public class HospitalServiceImpl implements HospitalService {
         hospitalRepository.save(hospital);
     }
 
+    @Override
+    public Map<String, Object> getHospById(String id) {
+        Map<String,Object> result = new HashMap<>();
+
+        Hospital hospital = hospitalRepository.findById(id).get();
+
+        //进行封装(医院基本信息：包含医院等级）
+        Hospital hospital1 = this.setHospitalHosType(hospital);
+
+        result.put("hospital",hospital1);
+
+        //单独处理更加直观
+        result.put("bookingRule",hospital.getBookingRule());
+
+        //不需要重复返回
+        hospital.setBookingRule(null);
+
+        return result;
+    }
+
+    @Override
+    public String getHosName(String hoscode) {
+        Hospital hospitalByHoscode = hospitalRepository.getHospitalByHoscode(hoscode);
+        return hospitalByHoscode==null? null:hospitalByHoscode.getHosname();
+    }
+
+    @Override
+    public List<Hospital> findByHosname(String hosname) {
+        return hospitalRepository.findHospitalByHosnameLike(hosname);
+    }
+
+    @Override
+    public Map<String, Object> item(String hoscode) {
+        Map<String,Object> map = new HashMap<>();
+        //医院详情
+        Hospital hospital = this.setHospitalHosType(this.getHosByHoscode(hoscode));
+        map.put("hospital",hospital);
+        //预约规则
+        map.put("bookingRule",hospital.getBookingRule());
+        //不需要重复返回
+        hospital.setBookingRule(null);
+
+        return map;
+    }
+
     //获取查询list集合，遍历进行医院等级封装
     private Hospital setHospitalHosType(Hospital hospital) {
         //根据dictCode和value获取医院等级名称
@@ -125,4 +171,6 @@ public class HospitalServiceImpl implements HospitalService {
         return hospital;
 
     }
+
+
 }

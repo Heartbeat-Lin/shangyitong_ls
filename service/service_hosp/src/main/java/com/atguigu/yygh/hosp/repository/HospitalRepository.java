@@ -4,8 +4,12 @@ import com.atguigu.yygh.model.hosp.Hospital;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface HospitalRepository extends MongoRepository<Hospital,String> {
 
     Hospital getHospitalByHoscode(String hoscode);//这行代码是符号规范的，Mongorepository会帮我实现这样一个方法。
+
+    List<Hospital> findHospitalByHosnameLike(String hosname);
 }

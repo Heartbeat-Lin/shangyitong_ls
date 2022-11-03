@@ -8,6 +8,8 @@ import com.atguigu.yygh.common.result.ResultCodeEnum;
 import com.atguigu.yygh.model.cmn.Dict;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,8 @@ import java.util.List;
 @Api(value = "数据字典接口")
 @RestController
 @RequestMapping("/admin/cmn/dict")
-@CrossOrigin
+@Slf4j
+//@CrossOrigin
 public class DictController {
 
     @Autowired
@@ -34,6 +37,10 @@ public class DictController {
             throw new YyghException(ResultCodeEnum.DATA_ERROR);
         }
         List<Dict> list=dictService.findByDictCode(dictCode);
+        log.info("调用了findByDictCode方法");
+        for (Dict dict : list) {
+            log.info("dict"+dict);
+        }
         return Result.ok(list);
     }
 

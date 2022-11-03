@@ -8,6 +8,7 @@
         <module>service</module>
         <module>hospital-manage</module>
         <module>service-client</module>
+        <module>server_gateway</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

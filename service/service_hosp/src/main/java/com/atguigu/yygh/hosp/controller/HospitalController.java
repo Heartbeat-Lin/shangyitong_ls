@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@CrossOrigin
+//@CrossOrigin
 @RequestMapping("/admin/hosp/hospital")
 public class HospitalController {
 
@@ -41,6 +43,16 @@ public class HospitalController {
 
         hospitalService.updateStatus(id,status);
         return Result.ok();
+    }
+
+
+    //医院详情信息
+    @ApiOperation(value = "医院详情信息")
+    @GetMapping("showHospDetail/{id}")
+    public Result showHospDetail(@PathVariable String id){
+        //通过mongodb查出信息; 用map返回值更容易后续的取值
+        Map<String,Object> hospital = hospitalService.getHospById(id);
+        return Result.ok(hospital);
     }
 
 
