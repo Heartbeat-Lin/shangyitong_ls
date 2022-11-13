@@ -156,4 +156,13 @@ public class DepartmentServiceImpl extends ServiceImpl<HospitalSetMapper, Hospit
         return null;
     }
 
+    @Override
+    public Department getDepartment(String hoscode, String depcode) {
+        Department department = departmentRepository.getDepartmentByHoscodeAndDepcode(hoscode, depcode);
+        if (department!=null){
+            return department;
+        }
+        return null;
+    }
+
 }
